@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Saddam's Calculator</title>
+    <style>
+        input[type=text], select, button {
+            margin: 5px;
+            padding: 5px;
+        }
+        #entries, #entries1, #buttons {
+            display: grid;
+            gap: 5px;
+        }
+        #buttons {
+            grid-template-columns: repeat(3, 1fr);
+        }
+    </style>
+</head>
+<body>
+    <h1>Saddam's Calculator</h1>
+
+    <div id="entries">
+        <input type="text" id="entry0" onfocus="setCurrentEntry('entry0')">
+        <input type="text" id="entry1" onfocus="setCurrentEntry('entry1')">
+        <input type="text" id="entry2" onfocus="setCurrentEntry('entry2')">
+        <input type="text" id="entry3" onfocus="setCurrentEntry('entry3')">
+        <input type="text" id="entry4" onfocus="setCurrentEntry('entry4')">
+    </div>
+
+    <label>Provide all fuel and def or input 0:</label>
+    <input type="text" id="output" readonly>
+
+    <button onclick="calculateSum1()">Calculate Load</button>
+    <button onclick="clearAll()">Clear All</button>
+
+    <label>TSC % 0.18 or20 or 22 or 50%:</label>
+    <input type="text" id="multiplyEntry">
+    
+    <label>Options:</label>
+    <select id="dropdown">
+        <option value="0.82">0.82</option>
+        <option value="0.80">0.80</option>
+        <option value="0.78">0.78</option>
+        <option value="0.50">0.50</option>
+    </select>
+    <button onclick="calculateMultiplication()">18% or other</button>
+    
+    <label>Output:</label>
+    <input type="text" id="multiplyOutput" readonly>
+    <label>Gross after ALL:</label>
+    <input type="text" id="resultSub" readonly>
+    <button onclick="calculateSub()">Gross after ALL</button>
+    
+    <div id="entries1">
+        <input type="text" id="entry5" onfocus="setCurrentEntry('entry5')">
+        <input type="text" id="entry6" onfocus="setCurrentEntry('entry6')">
+        <input type="text" id="entry7" onfocus="setCurrentEntry('entry7')">
+        <input type="text" id="entry8" onfocus="setCurrentEntry('entry8')">
+        <input type="text" id="entry9" onfocus="setCurrentEntry('entry9')">
+    </div>
+    
+    <div id="buttons">
+        <button onclick="appendNumber(7)">7</button>
+        <button onclick="appendNumber(8)">8</button>
+        <button onclick="appendNumber(9)">9</button>
+        <button onclick="appendNumber(4)">4</button>
+        <button onclick="appendNumber(5)">5</button>
+        <button onclick="appendNumber(6)">6</button>
+        <button onclick="appendNumber(1)">1</button>
+        <button onclick="appendNumber(2)">2</button>
+        <button onclick="appendNumber(3)">3</button>
+        <button onclick="appendNumber(0)">0</button>
+        <button onclick="appendNumber('.')">.</button>
+        <button onclick="clearEntry()">Clear</button>
+    </div>
+
+    <script>
+        let currentEntryId = null;
+
+        function setCurrentEntry(id) {
+            currentEntryId = id;
+        }
+
+        function appendNumber(number) {
+            if (currentEntryId) {
+                let entry = document.getElementById(currentEntryId);
+                entry.value += number;
+            }
+        }
+
+        function clearEntry() {
+            if (currentEntryId) {
+                let entry = document.getElementById(currentEntryId);
+                entry.value = '';
+            }
+        }
+
+        function clearAll() {
+            [...document.querySelectorAll('input[type=text]')].forEach(input => input.value = '');
+        }
+
+        function calculateSum1() {
+            let total = 0;
+            [...Array(5).keys()].forEach(i => {
+                total += parseFloat(document.getElementById('entry' + i).value || 0);
+            });
+            document.getElementById('output').value = total;
+        }
+
+        function calculateSub() {
+            let total = parseFloat(document.getElementById('output').value || 0);
+            [...Array(5).keys()].forEach(i => {
+                total -= parseFloat(document.getElementById('entry' + (i + 5)).value || 0);
+            });
+            document.getElementById('resultSub').value = total;
+        }
+
+        function calculateMultiplication() {
+            let num = parseFloat(document.getElementById('multiplyEntry').value || document.getElementById('output').value || 0);
+            let multiplier = parseFloat(document.getElementById('dropdown').value);
+            let result = num * multiplier;
+            document.getElementById('multiplyOutput').value = result;
+        }
+    </script>
+</body>
+</html>
